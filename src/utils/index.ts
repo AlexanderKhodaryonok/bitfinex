@@ -32,14 +32,14 @@ export function normalizeOrders(data: string): IOrder[] | [] {
   return [];
 }
 
-export function sort(array: any[], key: string) {
+export function sort(array: any[], key: string, isReverse = false) {
   const arrayCopy = [...array];
   arrayCopy.sort(function (a, b) {
     if (a[key] < b[key]) {
-      return 1;
+      return isReverse ? -1 : 1;
     }
     if (a[key] > b[key]) {
-      return -1;
+      return isReverse ? 1 : -1;
     }
     return 0;
   });
@@ -102,7 +102,7 @@ export function itemsHandler({
     }
   });
   setAsks(sort(removeMinus(newAsks), "price").splice(0, 30));
-  setBids(sort(newBids, "price").splice(0, 30));
+  setBids(sort(newBids, "price", true).splice(0, 30));
 }
 
 function removeMinus(newAsks: IOrder[]) {
