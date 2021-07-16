@@ -1,0 +1,13 @@
+.container {
+  padding: 10px;
+  border: 1px solid black;
+  width: 30%;
+}
+
+.hideSideBorder {
+  border-left: none;
+}
+
+.container td {
+  text-align: center;
+}
