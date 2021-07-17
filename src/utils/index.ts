@@ -77,8 +77,8 @@ export function itemsHandler({
   setAsks,
   setBids,
 }: IItemsHandler) {
-  const newBids: any = [...bids];
-  const newAsks: any = [...asks];
+  const newBids: IOrder[] = [...bids];
+  const newAsks: IOrder[] = [...asks];
   orders.forEach((order: any) => {
     const { amount, count, price } = order;
     if (count > 0) {
@@ -109,7 +109,6 @@ function removeMinus(newAsks: IOrder[]) {
   return newAsks.map((order: IOrder) => {
     if(order.amount?.toString()[0] === '-') {
       const formattedAmount = order.amount?.toString().split('').splice(1).join('');
-      debugger
       return {
         ...order,
         amount: formattedAmount

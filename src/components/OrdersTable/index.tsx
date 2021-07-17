@@ -10,7 +10,7 @@ interface IOrdersTable {
 function renderRow(data: IOrder[]) {
   return data.map(({ amount, price, count }: IOrder) => {
     return (
-      <tr>
+      <tr key={price}>
         <td>{count}</td>
         <td>{amount}</td>
         <td>{price}</td>
