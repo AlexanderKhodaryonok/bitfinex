@@ -1,0 +1,13 @@
+.container > ul {
+  display: flex;
+  padding: 10px 0;
+}
+
+.container > ul > li {
+  margin: 0 20px;
+}
+
+.container > ul > li > a {
+  text-decoration: none;
+  color: white;
+}

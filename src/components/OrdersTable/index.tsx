@@ -8,7 +8,8 @@ interface IOrdersTable {
 }
 
 function renderRow(data: IOrder[]) {
-  return data.map(({ amount, price, count }: IOrder) => {
+  return data.map(({ amount, price, count }: IOrder, index: number) => {
+    if(index > 20) return undefined;
     return (
       <tr key={price}>
         <td>{count}</td>
