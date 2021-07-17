@@ -8,7 +8,7 @@ interface IMenu {
 
 function renderItems(routes: IRoute[]) {
   return routes.map(({ url, title }: IRoute) => (
-    <li>
+    <li key={url}>
       <NavLink activeClassName={styles.active} to={url}>{title}</NavLink>
     </li>
   ));

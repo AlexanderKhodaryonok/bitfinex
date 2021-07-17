@@ -1,5 +1,6 @@
 import { IOrder } from "../../interfaces";
-import styles from './styles.module.css';
+import Loader from "../Loader";
+import styles from "./styles.module.css";
 
 interface IOrdersTable {
   title: string;
@@ -9,7 +10,7 @@ interface IOrdersTable {
 
 function renderRow(data: IOrder[]) {
   return data.map(({ amount, price, count }: IOrder, index: number) => {
-    if(index > 20) return undefined;
+    if (index > 20) return undefined;
     return (
       <tr key={price}>
         <td>{count}</td>
@@ -21,21 +22,33 @@ function renderRow(data: IOrder[]) {
 }
 
 function renderHead() {
-    return (
-      <tr>
-        <td>Count</td>
-        <td>Amount</td>
-        <td>Price</td>
-      </tr>
-    );
-};
-
-export default function OrdersTable({ title, data, isHideBorder = false }: IOrdersTable) {
   return (
-    <table className={`${styles.container} ${isHideBorder && styles.hideSideBorder}`}>
+    <tr>
+      <td>Count</td>
+      <td>Amount</td>
+      <td>Price</td>
+    </tr>
+  );
+}
+
+export default function OrdersTable({
+  title,
+  data,
+  isHideBorder = false,
+}: IOrdersTable) {
+  return (
+    <table
+      className={`${styles.container} ${isHideBorder && styles.hideSideBorder}`}
+    >
       <caption>{title}</caption>
-      {renderHead()}
-      {renderRow(data)}
+      {data.length === 0 ? (
+        <Loader type="Bars" color="white" />
+      ) : (
+        <>
+          {renderHead()}
+          {renderRow(data)}
+        </>
+      )}
     </table>
   );
 }
