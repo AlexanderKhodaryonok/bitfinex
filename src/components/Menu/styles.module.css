@@ -1,6 +1,14 @@
 .container > ul {
   display: flex;
-  padding: 10px 0;
+  margin-bottom: 20px;
+}
+
+.container > ul > li:first-child {
+  margin-left: 0;
+}
+
+.container > ul > li:last-child {
+  margin-right: 0;
 }
 
 .container > ul > li {
@@ -9,5 +17,9 @@
 
 .container > ul > li > a {
   text-decoration: none;
-  color: white;
+  color: inherit;
+}
+
+.active {
+  color: red!important;
 }
