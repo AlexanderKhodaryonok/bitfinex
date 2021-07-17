@@ -1,5 +1,5 @@
 .container {
   background-color: #102331;;
-  height: 100%;
+  height: calc(100% - 40px);
   padding: 20px;
 }

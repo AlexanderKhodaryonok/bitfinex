@@ -8,7 +8,7 @@ interface AboutState {
 
 const initialState: AboutState = {
   isLoading: false,
-  data: "Default data",
+  data: "Made with ❤ by me",
 };
 
 export const setData = createAsyncThunk<string, string>("about/setData", async (data) => {
