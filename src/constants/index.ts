@@ -1,4 +1,5 @@
 import { IRoute } from './../interfaces/index';
+
 export const wsUrl = 'wss://api-pub.bitfinex.com/ws/2';
 
 export const routes: IRoute[] = [
@@ -10,4 +11,6 @@ export const routes: IRoute[] = [
     url: '/order-book',
     title: 'Book Orders',
   }
-]
+];
+
+export const loaderColor = '#01a781';

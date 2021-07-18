@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { getSocketClient } from "../client/socket";
 import { itemsHandler, normalizeOrders } from "../utils";
-import { IOrder } from "./../interfaces";
+import { IFullOrder } from "./../interfaces";
 
 interface RUseOrders {
-  asks: IOrder[];
-  bids: IOrder[];
+  asks: IFullOrder[];
+  bids: IFullOrder[];
 }
 
 export function useOrders(wsUrl: string, symbol: string): RUseOrders {
-  const [asks, setAsks] = useState<IOrder[]>([]);
-  const [bids, setBids] = useState<IOrder[]>([]);
+  const [asks, setAsks] = useState<IFullOrder[]>([]);
+  const [bids, setBids] = useState<IFullOrder[]>([]);
   const ws: any = useRef(null);
   useEffect(() => {
     ws.current = getSocketClient(wsUrl);

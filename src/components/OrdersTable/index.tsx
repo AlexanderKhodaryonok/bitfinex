@@ -1,20 +1,22 @@
-import { IOrder } from "../../interfaces";
+import { loaderColor } from "../../constants";
+import { IFullOrder } from "../../interfaces";
 import Loader from "../Loader";
 import styles from "./styles.module.css";
 
 interface IOrdersTable {
   title: string;
-  data: IOrder[];
+  data: IFullOrder[];
   isHideBorder?: boolean;
 }
 
-function renderRow(data: IOrder[]) {
-  return data.map(({ amount, price, count }: IOrder, index: number) => {
+function renderRow(data: IFullOrder[]) {
+  return data.map(({ amount, price, count, total }: IFullOrder, index: number) => {
     if (index > 20) return undefined;
     return (
       <tr key={price}>
         <td>{count}</td>
         <td>{amount}</td>
+        <td>{total}</td>
         <td>{price}</td>
       </tr>
     );
@@ -26,6 +28,7 @@ function renderHead() {
     <tr>
       <td>Count</td>
       <td>Amount</td>
+      <td>Total</td>
       <td>Price</td>
     </tr>
   );
@@ -42,7 +45,7 @@ export default function OrdersTable({
     >
       <caption>{title}</caption>
       {data.length === 0 ? (
-        <Loader type="Bars" color="white" />
+        <Loader type="Bars" color={loaderColor} />
       ) : (
         <>
           {renderHead()}

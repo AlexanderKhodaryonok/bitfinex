@@ -1,4 +1,4 @@
-import { IOrder } from "./../interfaces/index";
+import { IFullOrder, IOrder } from "./../interfaces/index";
 
 function getOrder(data: number[]): IOrder {
   const [price, count, amount] = data;
@@ -48,10 +48,10 @@ export function sort(array: any[], key: string, isReverse = false) {
 
 interface IItemsHandler {
   orders: IOrder[];
-  asks: IOrder[];
-  bids: IOrder[];
-  setAsks: (asks: IOrder[]) => void;
-  setBids: (bids: IOrder[]) => void;
+  asks: IFullOrder[];
+  bids: IFullOrder[];
+  setAsks: (asks: IFullOrder[]) => void;
+  setBids: (bids: IFullOrder[]) => void;
 }
 
 function getIndex(arr: IOrder[], price: number) {
@@ -77,8 +77,8 @@ export function itemsHandler({
   setAsks,
   setBids,
 }: IItemsHandler) {
-  const newBids: IOrder[] = [...bids];
-  const newAsks: IOrder[] = [...asks];
+  const newBids: IFullOrder[] = [...bids];
+  const newAsks: IFullOrder[] = [...asks];
   orders.forEach((order: any) => {
     const { amount, count, price } = order;
     if (count > 0) {
@@ -101,8 +101,22 @@ export function itemsHandler({
       }
     }
   });
-  setAsks(sort(removeMinus(newAsks), "price").splice(0, 30));
-  setBids(sort(newBids, "price", true).splice(0, 30));
+  const sortedAsks = sort(removeMinus(newAsks), "price").splice(0, 30);
+  const sortedBids = sort(newBids, "price", true).splice(0, 30);
+  setAsks(addTotal(sortedAsks));
+  setBids(addTotal(sortedBids));
+}
+
+function addTotal(orders: IOrder[]): IFullOrder[] {
+  let currentTotal = 0;
+  return orders.map((order: IOrder): IFullOrder => {
+    const { amount } = order;
+    currentTotal = amount! + currentTotal;
+    return {
+      ...order,
+      total: Math.round(currentTotal * 10000) / 10000,
+    }
+  })
 }
 
 function removeMinus(newAsks: IOrder[]) {
@@ -111,7 +125,7 @@ function removeMinus(newAsks: IOrder[]) {
       const formattedAmount = order.amount?.toString().split('').splice(1).join('');
       return {
         ...order,
-        amount: formattedAmount
+        amount: Number(formattedAmount)
       }
     }
     return order;
