@@ -5,13 +5,13 @@ import styles from './styles.module.css';
 import PageTitle from "../../components/PageTitle";
 
 function OrderBook() {
-  const { asks, bids } = useOrders(wsUrl, "tBTCUSD");
+  const { asks, bids, maxTotalBid, maxTotalAsk } = useOrders(wsUrl, "tBTCUSD");
   return (
     <div className={styles.container}>
       <PageTitle title='Order Book' />
       <div className={styles.table_wrapper}>
-        <OrdersTable data={asks} title="ask" />
-        <OrdersTable data={bids} title="bids" isHideBorder />
+        <OrdersTable data={asks} title="Asks" type='ask' maxTotal={maxTotalAsk} />
+        <OrdersTable data={bids} title="Bids" type='bid' maxTotal={maxTotalBid} isHideBorder />
       </div>
     </div>
   );

@@ -12,3 +12,5 @@ export interface IRoute {
   title: string;
   url: string;
 }
+
+export type TOrderType = 'ask' | 'bid';

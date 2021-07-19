@@ -13,3 +13,24 @@
   text-align: center;
   width: 110px;
 }
+
+tr {
+  position: relative;
+}
+
+.chart {
+  position: absolute;
+  opacity: .5;
+  height: 100%;
+}
+
+.chartBids {
+  background-color: red;
+  left: 0;
+}
+
+
+.chartAsks {
+  background-color: green;
+  right: 0;
+}

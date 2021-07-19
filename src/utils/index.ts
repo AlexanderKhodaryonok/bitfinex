@@ -46,12 +46,14 @@ export function sort(array: any[], key: string, isReverse = false) {
   return arrayCopy;
 }
 
-interface IItemsHandler {
+interface IOrdersHandler {
   orders: IOrder[];
   asks: IFullOrder[];
   bids: IFullOrder[];
   setAsks: (asks: IFullOrder[]) => void;
   setBids: (bids: IFullOrder[]) => void;
+  setTotalBid: (maxTotal: number | null) => void;
+  setTotalAsk: (maxTotal: number | null) => void;
 }
 
 function getIndex(arr: IOrder[], price: number) {
@@ -70,13 +72,15 @@ function addItem(orders: IOrder[], order: IOrder, price: number) {
   }
 }
 
-export function itemsHandler({
+export function ordersHandler({
   orders,
   asks,
   bids,
   setAsks,
   setBids,
-}: IItemsHandler) {
+  setTotalBid,
+  setTotalAsk,
+}: IOrdersHandler) {
   const newBids: IFullOrder[] = [...bids];
   const newAsks: IFullOrder[] = [...asks];
   orders.forEach((order: any) => {
@@ -103,13 +107,23 @@ export function itemsHandler({
   });
   const sortedAsks = sort(removeMinus(newAsks), "price").splice(0, 30);
   const sortedBids = sort(newBids, "price", true).splice(0, 30);
-  setAsks(addTotal(sortedAsks));
-  setBids(addTotal(sortedBids));
+  const { changedOrders: changedAsks, maxTotal: maxTotalAsk } = addTotal(sortedAsks);
+  const { changedOrders: changedBids, maxTotal: maxTotalBid } = addTotal(sortedBids);
+
+  setAsks(changedAsks);
+  setBids(changedBids);
+  setTotalAsk(maxTotalAsk);
+  setTotalBid(maxTotalBid);
 }
 
-function addTotal(orders: IOrder[]): IFullOrder[] {
+interface RAddTotal {
+  changedOrders: IFullOrder[];
+  maxTotal: number | null;
+}
+
+function addTotal(orders: IFullOrder[]): RAddTotal {
   let currentTotal = 0;
-  return orders.map((order: IOrder): IFullOrder => {
+  const changedOrders =  orders.map((order: IOrder): IFullOrder => {
     const { amount } = order;
     currentTotal = amount! + currentTotal;
     return {
@@ -117,6 +131,8 @@ function addTotal(orders: IOrder[]): IFullOrder[] {
       total: Math.round(currentTotal * 10000) / 10000,
     }
   })
+  const maxTotal = changedOrders[changedOrders.length - 1]?.total || null;
+  return { changedOrders, maxTotal  }
 }
 
 function removeMinus(newAsks: IOrder[]) {
@@ -130,4 +146,12 @@ function removeMinus(newAsks: IOrder[]) {
     }
     return order;
   })
+}
+
+export function getChartItemWidth(maxTotal: number | null, total: number): number {
+  if(maxTotal) {
+    const width = total * 100 / maxTotal;
+    return width
+  }
+  return 0;
 }

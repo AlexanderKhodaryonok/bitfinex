@@ -1,23 +1,28 @@
 import { loaderColor } from "../../constants";
-import { IFullOrder } from "../../interfaces";
+import { IFullOrder, TOrderType } from "../../interfaces";
+import { getChartItemWidth } from "../../utils";
 import Loader from "../Loader";
 import styles from "./styles.module.css";
 
 interface IOrdersTable {
   title: string;
   data: IFullOrder[];
+  maxTotal: number | null;
+  type: TOrderType;
   isHideBorder?: boolean;
 }
 
-function renderRow(data: IFullOrder[]) {
+function renderRow(data: IFullOrder[], maxTotal: number | null, type: TOrderType) {
   return data.map(({ amount, price, count, total }: IFullOrder, index: number) => {
     if (index > 20) return undefined;
+    const width = getChartItemWidth(maxTotal, total);
     return (
       <tr key={price}>
         <td>{count}</td>
         <td>{amount}</td>
         <td>{total}</td>
         <td>{price}</td>
+        <td className={`${styles.chart} ${type === 'ask' ? styles.chartAsks : styles.chartBids}`} style={{width: `${width}%`}}></td>
       </tr>
     );
   });
@@ -37,6 +42,8 @@ function renderHead() {
 export default function OrdersTable({
   title,
   data,
+  maxTotal,
+  type,
   isHideBorder = false,
 }: IOrdersTable) {
   return (
@@ -49,7 +56,7 @@ export default function OrdersTable({
       ) : (
         <>
           {renderHead()}
-          {renderRow(data)}
+          {renderRow(data, maxTotal, type)}
         </>
       )}
     </table>
