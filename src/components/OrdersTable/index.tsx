@@ -7,12 +7,12 @@ import styles from "./styles.module.css";
 interface IOrdersTable {
   title: string;
   data: IFullOrder[];
-  maxTotal: number | null;
+  maxTotal: number;
   type: TOrderType;
   isHideBorder?: boolean;
 }
 
-function renderRow(data: IFullOrder[], maxTotal: number | null, type: TOrderType) {
+function renderRow(data: IFullOrder[], maxTotal: number, type: TOrderType) {
   return data.map(({ amount, price, count, total }: IFullOrder, index: number) => {
     if (index > 20) return undefined;
     const width = getChartItemWidth(maxTotal, total);
